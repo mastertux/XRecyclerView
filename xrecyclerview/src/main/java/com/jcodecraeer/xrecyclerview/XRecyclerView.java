@@ -294,6 +294,8 @@ public class XRecyclerView extends RecyclerView {
         super.setAdapter(mWrapAdapter);
         adapter.registerAdapterDataObserver(mDataObserver);
         mDataObserver.onChanged();
+        if (mScroller != null)
+            mScroller.setAdapter(adapter);
     }
 
     //避免用户自己调用getAdapter() 引起的ClassCastException
