@@ -479,6 +479,27 @@ public class XRecyclerView extends RecyclerView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+
+        if (mEnabled) {
+            // Intercept ListView's touch event
+            if (mScroller != null && mScroller.onTouchEvent(ev))
+                return true;
+
+            if (mGestureDetector == null) {
+                mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2,
+                                           float velocityX, float velocityY) {
+                        return super.onFling(e1, e2, velocityX, velocityY);
+                    }
+
+                });
+            }
+            mGestureDetector.onTouchEvent(ev);
+        }
+
+
         if (mLastY == -1) {
             mLastY = ev.getRawY();
         }
@@ -507,6 +528,8 @@ public class XRecyclerView extends RecyclerView {
                 }
                 break;
         }
+
+
         return super.onTouchEvent(ev);
     }
 
